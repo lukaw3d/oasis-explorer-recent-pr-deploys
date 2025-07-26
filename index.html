@@ -1,0 +1,26 @@
+<input id="search" size="200" value="https://explorer.dev.oasis.io/testnet/sapphire/search?q=0x4b5ca97d1F45a8b589c0C161ebB258D50F756468" />
+<div id="results"></div>
+
+<script>
+(async () => {
+  let prs = await (await fetch('https://api.github.com/repos/oasisprotocol/explorer/pulls?state=closed&per_page=100&sort=updated&direction=desc')).json();
+  prs = prs.filter(p => p.merged_at).sort((a,b) => new Date(b.merged_at).getTime() - new Date(a.merged_at).getTime());
+  prs.map(p => p.number);
+
+  document.getElementById('search').addEventListener('input', (e) => {
+    const path = new URL(e.target.value.trim()).href.replace(new URL(e.target.value.trim()).origin, '');
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = '';
+
+    prs.forEach(p => {
+      const a = document.createElement('a');
+      a.href = `https://pr-${p.number}.oasis-explorer.pages.dev${path}`;
+      a.textContent = a.href;
+      a.target = '_blank';
+      resultsDiv.appendChild(a);
+      resultsDiv.appendChild(document.createElement('br'));
+    });
+  });
+  document.getElementById('search').dispatchEvent(new Event('input'));
+})();
+</script>
