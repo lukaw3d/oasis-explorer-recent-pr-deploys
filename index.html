@@ -3,7 +3,10 @@
 
 <script>
 (async () => {
-  let prs = await (await fetch('https://api.github.com/repos/oasisprotocol/explorer/pulls?state=closed&per_page=100&sort=updated&direction=desc')).json();
+  let prs = [
+    ...await (await fetch('https://api.github.com/repos/oasisprotocol/explorer/pulls?state=closed&per_page=100&sort=updated&direction=desc')).json(),
+    ...await (await fetch('https://api.github.com/repos/oasisprotocol/explorer/pulls?state=closed&per_page=100&sort=updated&direction=desc&page=2')).json(),
+  ];
   prs = prs.filter(p => p.merged_at).sort((a,b) => new Date(b.merged_at).getTime() - new Date(a.merged_at).getTime());
   prs.map(p => p.number);
 
