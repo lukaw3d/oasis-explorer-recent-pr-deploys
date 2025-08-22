@@ -13,7 +13,7 @@
   document.getElementById('search').addEventListener('input', (e) => {
     const path = new URL(e.target.value.trim()).href.replace(new URL(e.target.value.trim()).origin, '');
     const resultsDiv = document.getElementById('results');
-    resultsDiv.innerHTML = '';
+    resultsDiv.innerHTML = 'newest<br>';
 
     prs.forEach(p => {
       const a = document.createElement('a');
